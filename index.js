@@ -35,7 +35,7 @@ class PkgPyFuncs {
     this.mountSSH = config.mountSSH || false
     this.abortOnPackagingErrors = config.abortOnPackagingErrors || false
     this.dockerServicePath = '/var/task'
-    this.packRequirements = config.packRequirements || true
+    this.packRequirements = (config.packRequirements === undefined ? true : config.packRequirements)
   }
 
   autoconfigArtifacts() {
