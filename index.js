@@ -35,7 +35,6 @@ class PkgPyFuncs {
     this.mountSSH = config.mountSSH || false
     this.abortOnPackagingErrors = config.abortOnPackagingErrors || false
     this.dockerServicePath = '/var/task'
-    this.installRequirements = config.installRequirements || true
   }
 
   autoconfigArtifacts() {
@@ -208,16 +207,14 @@ class PkgPyFuncs {
     if (this.globalIncludes){
       includes = _.concat(includes, this.globalIncludes)
     }
-    _.forEach(includes, (item) => { Fse.copySync(item, buildPath, {dereference:true}) } )
+    _.forEach(includes, (item) => { Fse.copySync(item, buildPath) } )
 
     // Install requirements
     let requirements = [requirementsPath]
     if (this.globalRequirements){
       requirements = _.concat(requirements, this.globalRequirements)
     }
-    if (this.installRequirements){
-      _.forEach(requirements, (req) => { this.installRequirements(buildPath,req) })
-    }
+    _.forEach(requirements, (req) => { this.installRequirements(buildPath,req) })
     zipper.sync.zip(buildPath).compress().save(`${buildPath}.zip`)
   }
 
